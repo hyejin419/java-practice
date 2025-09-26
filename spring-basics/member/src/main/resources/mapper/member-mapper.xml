@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.member.mapper.MemberMapper">
+    <select id="findByUsername" resultType="MemberDTO">
+        select * from member where username = #{username}  <!--MemberMapper의 param값과 같은 username 사용-->
+    </select>
+
+    <insert id="save" parameterType="MemberDTO">
+        insert into member(username, password, name)
+        values (#{username}, #{password}, #{name})
+    </insert>
+
+
+    <update id="update" parameterType="MemberDTO">
+        update member set password=#{password}, name=#{name}
+        where id = #{id}
+    </update>
+</mapper>

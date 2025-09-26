@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.restapi.mapper.PostMapper">
+    <insert id="insertPost" parameterType="PostDTO" useGeneratedKeys="true" keyProperty="id">
+        insert into post (title, content, writer_id) values
+            (#{title}, #{content}, #{writerId})
+    </insert>
+
+    <select id="getPosts" resultType="com.koreait.restapi.dto.PostDTO">
+        select p.*, m.name as writerName,
+               CONCAT('/uploads/', f.upload_path, f.thumbnail_name) as thumbnailUrl from post p join member m
+                on p.writer_id = m.id left join post_file f on p.id = f.post_id order by p.created_at desc
+            limit #{limit} offset #{offset}
+    </select>
+
+    <insert id="saveFile" parameterType="com.koreait.restapi.dto.PostFileDTO">
+        insert into post_file (post_id, original_name, saved_name, thumbnail_name, upload_path)
+        values (#{postId}, #{originalName}, #{savedName}, #{thumbnailName}, #{uploadPath})
+    </insert>
+</mapper>
